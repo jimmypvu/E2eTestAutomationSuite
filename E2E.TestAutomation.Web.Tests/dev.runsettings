@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <NUnit>
+    <NumberOfTestWorkers>1</NumberOfTestWorkers>
+  </NUnit>
+  <Playwright>
+    <!--chromium, firefox, webkit-->
+    <BrowserName>chromium</BrowserName>
+    <ExpectTimeout>30000</ExpectTimeout>
+    <LaunchOptions>
+      <!--chromium, chrome, msedge-->
+      <Channel>chromium</Channel>
+      <Headless>false</Headless>
+      <SlowMo>33</SlowMo>
+    </LaunchOptions>
+  </Playwright>
+  <TestRunParameters>
+    <!--chromium, chrome, msedge, firefox, webkit-->
+    <Parameter name="browser" value="chromium" />
+    <Parameter name="viewportWidth" value="1280" />
+    <Parameter name="viewportHeight" value="720" />
+    <Parameter name="navigationTimeoutMs" value="30000" />
+
+    <Parameter name="enableTrace" value="false" />
+    <Parameter name="enableScreenshots" value="true" />
+    <Parameter name="enableDebug" value="true" />
+    <Parameter name="enableVideo" value="false" />
+
+    <Parameter name="environment" value="local" />
+    <!-- Enter the local VM name -->
+    <Parameter name="vmname" value="jvuqualityvm" />
+    <!-- Path on the local db server that maps to an empty backup  -->
+    <Parameter name="newDbBakFilePath" value="C:\QaE2eTestAssets\Bak\EDB_Testing.bak" />
+  </TestRunParameters>
+</RunSettings>
