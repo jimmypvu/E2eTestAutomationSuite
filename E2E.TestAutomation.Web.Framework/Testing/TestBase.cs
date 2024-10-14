@@ -124,13 +124,13 @@ namespace Jvu.TestAutomation.Web.Framework.Testing
     /// ***********************************************************
     public async Task<IPage> GetMobileDeviceContextAndLaunchPageAsync(string deviceName)
     {
-      var mobileDevice = this.Playwright.Devices[deviceName];
-      mobileDevice.BaseURL = this.BaseUrl;
-      mobileDevice.ColorScheme = ColorScheme.Dark;
-      mobileDevice.IsMobile = true;
-      mobileDevice.DeviceScaleFactor = 3;
-      mobileDevice.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
-      var mobileContext = await this.Browser.NewContextAsync(mobileDevice);
+      var device = this.Playwright.Devices[deviceName];
+      device.BaseURL = this.BaseUrl;
+      device.ColorScheme = ColorScheme.Dark;
+      device.IsMobile = true;
+      device.DeviceScaleFactor = 3;
+      device.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
+      var mobileContext = await this.Browser.NewContextAsync(device);
       this.OpenBrowserContexts.Add(mobileContext, deviceName);
       return await mobileContext.NewPageAsync();
     }
