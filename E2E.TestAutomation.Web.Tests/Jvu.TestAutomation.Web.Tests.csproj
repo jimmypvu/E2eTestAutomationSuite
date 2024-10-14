@@ -39,11 +39,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="E2ETests\" />
 		<Folder Include="AccessbilityTests\" />
 		<Folder Include="DatabaseTests\" />
 		<Folder Include="ApiTests\" />
+		<Folder Include="TestData\BaselineImages\" />
 		<Folder Include="VisualBaselineTests\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="dev.runsettings">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 </Project>
