@@ -17,14 +17,13 @@ namespace Jvu.TestAutomation.Web.Framework.Extensions
   /// <version>1.0.0</version>
   /// <remarks></remarks>
   /// ***********************************************************
-  public static class TestBaseExtensions
+  public static partial class TestBaseExtensions
   {
     /// ***********************************************************
     public static string? GetTestSettingIfExists(this ILogger logger, string parameterName)
     {
-      logger.WriteLine($"doesParamExist {parameterName}: {TestContext.Parameters.Exists(parameterName)}");
       if (TestContext.Parameters.Exists(parameterName))
-        return TestContext.Parameters.Get(parameterName);
+        return TestContext.Parameters.Get(parameterName).ToLower();
 
       return null;
     }

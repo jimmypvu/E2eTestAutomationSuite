@@ -5,8 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Playwright.NUnit;
 using Jvu.TestAutomation.Web.Framework.Extensions;
+using Jvu.TestAutomation.Web.Framework.Models;
 using Jvu.TestAutomation.Web.Framework.Logging;
 using System.Runtime.CompilerServices;
+using System.Threading.Channels;
+using static iText.Kernel.Pdf.Colorspace.PdfSpecialCs;
+using Microsoft.Playwright;
 
 namespace Jvu.TestAutomation.Web.Framework.Testing
 {
@@ -22,7 +26,7 @@ namespace Jvu.TestAutomation.Web.Framework.Testing
       get; private set;
     }
 
-    public Dictionary<int, IBrowserContext> OpenBrowserContexts { get; private set; } = new Dictionary<int, IBrowserContext>();
+    public Dictionary<IBrowserContext, string> OpenBrowserContexts { get; private set; } = new Dictionary<IBrowserContext, string>();
 
     private IPage _page;
 
@@ -59,79 +63,88 @@ namespace Jvu.TestAutomation.Web.Framework.Testing
     } = null;
 
     public string TestName => TestContext.CurrentContext.Test.MethodName;
+    public string BrowserName
+    {
+      get; set;
+    }
+    public string BaseUrl
+    {
+      get; private set;
+    } = "https://www.reddit.com/";
     /// ***********************************************************
     [SetUp]
     public async Task SetupAsync()
     {
       // get browser from runsettings
-      var browser = this.GetTestSettingIfExists("browser");
+      this.BrowserName = this.GetTestSettingIfExists("browser");
 
-      this.WriteLine($"{this.GetTestSettingIfExists("slowMo")}");
-      this.WriteLine($"{(bool)this.GetTestSettingIfExists("headless").AsBool()}");
-
-      this.BrowserLaunchOptions = this.BrowserLaunchOptions ?? new BrowserTypeLaunchOptions()
-      {
-        SlowMo = (int)this.GetTestSettingIfExists("slowMo").AsInt(),
-        Headless = (bool)this.GetTestSettingIfExists("headless").AsBool(),
-        DownloadsPath = $"{this.GetTestDownloadsFolderPath()}\\downloads",
-        Channel = this.GetTestSettingIfExists("channel"),
-        //SlowMo = 33,
-        //Headless = false,
-      };
+      // if launch options are provided use those, otherwise use default launch options
+      this.BrowserLaunchOptions = this.BrowserLaunchOptions ?? this.GetDefaultBrowserLaunchOptions(this.BrowserName);
 
       // browser will launch with default launchoptions from .runsettings files unless otherwise specified
-      switch (browser)
+      switch (this.BrowserName)
       {
         case "chromium":
         case "chrome":
         case "msedge":
-          {
-            this.Browser = this.BrowserLaunchOptions == null ?
-              await this.Playwright.Chromium.LaunchAsync() :
-              await this.Playwright.Chromium.LaunchAsync(this.BrowserLaunchOptions);
-          }
+          this.Browser = await this.Playwright.Chromium.LaunchAsync(this.BrowserLaunchOptions);
           break;
         case "firefox":
-          {
-            this.Browser = this.BrowserLaunchOptions == null ?
-              await this.Playwright.Firefox.LaunchAsync() :
-              await this.Playwright.Firefox.LaunchAsync(this.BrowserLaunchOptions);
-          }
+          this.Browser = await this.Playwright.Firefox.LaunchAsync(this.BrowserLaunchOptions);
           break;
         case "webkit":
-          {
-            this.Browser = this.BrowserLaunchOptions == null ?
-              await this.Playwright.Webkit.LaunchAsync() :
-              await this.Playwright.Webkit.LaunchAsync(this.BrowserLaunchOptions);
-          }
+          this.Browser = await this.Playwright.Webkit.LaunchAsync(this.BrowserLaunchOptions);
           break;
         default: throw new NotImplementedException();
       }
 
       // override ContextOptions for each browser context as needed
-      var context = await this.Browser.NewContextAsync(ContextOptions());
-      this.OpenBrowserContexts.Add(1, context);
-
-      this._page = await context.NewPageAsync();
+      var context = await this.Browser.NewContextAsync(this.ContextOptions());
+      this.OpenBrowserContexts.Add(context, $"DefaultBrowserContext");
 
       this.WriteLine($"browserName: {this.BrowserName}");
-      this.WriteLine($"pageWindow: {this._page.ViewportSize.Width} x {this._page.ViewportSize.Height}");
+      this.WriteLine($"opening page in {this.OpenBrowserContexts[context]}");
+
+      this._page = await context.NewPageAsync();
+      this.WriteLine($"viewportSizePage1: {this._page.ViewportSize.Width} x {this._page.ViewportSize.Height}");
+    }
+
+    /// ***********************************************************
+    [TearDown]
+    public async Task TeardownAsync()
+    {
+      foreach (var context in this.OpenBrowserContexts.Keys)
+      {
+        await context.CloseAsync();
+      }
+
+      await this.Browser.CloseAsync();
+    }
+
+    /// ***********************************************************
+    public async Task<IPage> GetMobileDeviceContextAndLaunchPageAsync(string deviceName)
+    {
+      var mobileDevice = this.Playwright.Devices[deviceName];
+      mobileDevice.BaseURL = this.BaseUrl;
+      mobileDevice.ColorScheme = ColorScheme.Dark;
+      mobileDevice.IsMobile = true;
+      mobileDevice.DeviceScaleFactor = 3;
+      mobileDevice.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.5112.79 Safari/537.36";
+      var mobileContext = await this.Browser.NewContextAsync(mobileDevice);
+      this.OpenBrowserContexts.Add(mobileContext, deviceName);
+      return await mobileContext.NewPageAsync();
     }
 
     /// ***********************************************************
     protected virtual BrowserNewContextOptions ContextOptions()
     {
       // add any additional contextOptions as needed per test, or override altogether if needed
-      var options = this.AdditionalContextOptions != null ?
-        this.AdditionalContextOptions :
+      var options = this.AdditionalContextOptions ??
         new BrowserNewContextOptions();
 
       // add default contextOptions here
-      options.BaseURL = options.BaseURL.IsNotNullOrWhiteSpace() ?
-        options.BaseURL :
-        "https://www.reddit.com/";
-      options.ViewportSize = options.ViewportSize != null ?
-        options.ViewportSize :
+      options.BaseURL = options.BaseURL ?? this.BaseUrl;
+      options.ViewportSize = options.ViewportSize ??
         new ViewportSize
         {
           Height = (int)this.GetTestSettingIfExists("viewportHeight").AsInt(),
@@ -139,6 +152,29 @@ namespace Jvu.TestAutomation.Web.Framework.Testing
         };
 
       return options;
+    }
+
+    /// ***********************************************************
+    public BrowserTypeLaunchOptions GetDefaultBrowserLaunchOptions(string browserName)
+    {
+      string channel = "";
+      switch (browserName)
+      {
+        case "chromium": channel = "chromium"; break;
+        case "chrome": channel = "chrome"; break;
+        case "msedge": channel = "msedge"; break;
+        case "firefox": channel = "firefox"; break;
+        case "webkit": channel = "webkit"; break;
+        default: channel = "chromium"; break;
+      }
+
+      return new BrowserTypeLaunchOptions()
+      {
+        SlowMo = (int)this.GetTestSettingIfExists("slowMo").AsInt(),
+        Headless = (bool)this.GetTestSettingIfExists("headless").AsBool(),
+        DownloadsPath = $"{this.GetTestDownloadsFolderPath()}\\downloads",
+        Channel = channel
+      };
     }
 
     /// ***********************************************************

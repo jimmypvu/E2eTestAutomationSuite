@@ -17,8 +17,8 @@
 	<TestRunParameters>
 		<!--chromium, chrome, msedge, firefox, webkit-->
 		<Parameter name="browser" value="chrome" />
-		<Parameter name="viewportWidth" value="1440" />
-		<Parameter name="viewportHeight" value="900" />
+		<Parameter name="viewportWidth" value="1280" />
+		<Parameter name="viewportHeight" value="720" />
 		<Parameter name="navigationTimeoutMs" value="30000" />
 
 		<Parameter name="enableTrace" value="false" />
@@ -27,9 +27,9 @@
 		<Parameter name="enableVideo" value="false" />
 
 		<Parameter name="environment" value="local" />
-		<Paremeter name="channel" value="chromium" />
-		<Paremeter name="headless" value="false" />
-		<Paremeter name="slowMo" value="33" />
+		<Parameter name="channel" value="chromium" />
+		<Parameter name="headless" value="false" />
+		<Parameter name="slowMo" value="33" />
 		<!-- Enter the local VM name -->
 		<Parameter name="vmname" value="jvuqualityvm" />
 		<!-- Path on the local db server that maps to an empty backup  -->

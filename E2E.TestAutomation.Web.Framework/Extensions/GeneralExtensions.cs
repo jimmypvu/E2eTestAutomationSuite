@@ -13,7 +13,7 @@ namespace Jvu.TestAutomation.Web.Framework.Extensions
   /// <version>1.0.0</version>
   /// <remarks>general extensions</remarks>
   /// ***********************************************************
-  public static class GeneralExtensions
+  public static partial class GeneralExtensions
   {
     /// ***********************************************************
     public static bool EqualsAnyCase(this string inputString, string targetString)
