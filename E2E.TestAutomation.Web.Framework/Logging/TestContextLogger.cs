@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Jvu.TestAutomation.Web.Framework.Extensions;
+using NUnit.Framework;
 
 namespace Jvu.TestAutomation.Web.Framework.Logging
 {
@@ -37,8 +38,8 @@ namespace Jvu.TestAutomation.Web.Framework.Logging
     public void WriteException(Exception ex)
     {
       var timestamp = $"{DateTime.Now:hh:mm:ss tt}";
-      TestContext.WriteLine($"{timestamp} - {ex.Message}");
-      TestContext.WriteLine($"{timestamp} - {ex.StackTrace}");
+      TestContext.Out.WriteLine($"{timestamp} - {ex.Message}");
+      TestContext.Out.WriteLine($"{timestamp} - {ex.StackTrace}");
     }
   }
 }

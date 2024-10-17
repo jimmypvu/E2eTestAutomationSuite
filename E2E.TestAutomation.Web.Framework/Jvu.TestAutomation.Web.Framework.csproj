@@ -27,6 +27,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+		<PackageReference Include="StronglyTyped.PixelMatch.GDI" Version="0.2.0" />
+		<PackageReference Include="StronglyTyped.PixelMatch.net" Version="0.2.0" />
 		<PackageReference Include="System.Drawing.Common" Version="8.0.10" />
 	</ItemGroup>
 
@@ -35,7 +37,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="TestUtils\" />
 		<Folder Include="WebChores\" />
 		<Folder Include="Services\Azure\" />
 		<Folder Include="Services\Local\" />

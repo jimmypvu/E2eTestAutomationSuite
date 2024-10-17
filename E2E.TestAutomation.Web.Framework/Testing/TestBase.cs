@@ -21,6 +21,8 @@ namespace Jvu.TestAutomation.Web.Framework.Testing
   /// ***********************************************************
   public class TestBase : PlaywrightTest, ILogger
   {
+    private TestContextLogger _log = new();
+
     public IBrowser Browser
     {
       get; private set;
@@ -180,28 +182,28 @@ namespace Jvu.TestAutomation.Web.Framework.Testing
     /// ***********************************************************
     public void WriteLine(string message)
     {
-      TestContext.WriteLine($"{DateTime.Now:hh:mm:ss tt} - {message}");
+      this._log.WriteLine($"{message}");
     }
 
     /// ***********************************************************
     public void DetailLine(string message)
     {
-      TestContext.WriteLine($"{DateTime.Now:hh:mm:ss tt} --- {message}");
+      this._log.DetailLine($"{message}");
     }
 
     /// ***********************************************************
     public void DebugLine(string message)
     {
-      if ((bool)this.GetTestSettingIfExists("enableDebug").AsBool())
-        TestContext.WriteLine($"{DateTime.Now:hh:mm:ss tt} - {message}");
+      if (this.GetTestSettingIfExists("enableDebug").AsBool())
+        this._log.DebugLine($"{message}");
     }
 
     /// ***********************************************************
     public void WriteException(Exception ex)
     {
       var timestamp = $"{DateTime.Now:hh:mm:ss tt}";
-      TestContext.WriteLine($"{timestamp} - {ex.Message}");
-      TestContext.WriteLine($"{timestamp} - {ex.StackTrace}");
+      this._log.DebugLine($"{ex.Message}");
+      this._log.DebugLine($"{ex.StackTrace}");
     }
   }
 }
