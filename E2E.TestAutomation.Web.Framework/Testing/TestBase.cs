@@ -17,7 +17,7 @@ namespace Jvu.TestAutomation.Web.Framework.Testing
   /// ***********************************************************
   /// <author>JVU</author>
   /// <version>1.0.0</version>
-  /// <remarks></remarks>
+  /// <remarks>setup methods and base test class for e2e UI & functional suites</remarks>
   /// ***********************************************************
   public class TestBase : PlaywrightTest, ILogger
   {
