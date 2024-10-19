@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Deque.AxeCore.Commons;
 using Deque.AxeCore.Playwright;
 
-namespace Jvu.TestAutomation.Web.Framework.Extensions
+namespace E2e.Automation.Framework.Extensions
 {
   /// ***********************************************************
   /// <author>JVU</author>

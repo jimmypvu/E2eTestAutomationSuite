@@ -1,6 +1,6 @@
-﻿using Jvu.TestAutomation.Web.Framework.Testing;
+﻿using E2e.Automation.Framework.Testing;
 
-namespace Jvu.TestAutomation.Web.Framework.Pages
+namespace E2e.Automation.Framework.Pages
 {
   /// ***********************************************************
   /// <author>JVU</author>

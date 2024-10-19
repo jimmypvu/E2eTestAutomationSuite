@@ -1,4 +1,4 @@
-﻿namespace Jvu.TestAutomation.Web.Framework.Utils.Images
+﻿namespace E2e.Automation.Framework.Utils.Images
 {
   /// ***********************************************************
   /// <author>JVU</author>

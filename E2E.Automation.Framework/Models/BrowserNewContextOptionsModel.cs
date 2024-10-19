@@ -1,4 +1,4 @@
-﻿namespace Jvu.TestAutomation.Web.Framework.Models
+﻿namespace E2e.Automation.Framework.Models
 {
   public class BrowserNewContextOptionsModel
   {

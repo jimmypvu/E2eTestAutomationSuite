@@ -3,7 +3,7 @@ using System.Drawing.Imaging;
 using System.Reflection;
 using System.Text;
 
-namespace Jvu.TestAutomation.Web.Framework.Utils.Images
+namespace E2e.Automation.Framework.Utils.Images
 {
   /// ***********************************************************
   /// <author>JVU</author>

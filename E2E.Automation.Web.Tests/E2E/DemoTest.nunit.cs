@@ -1,6 +1,6 @@
-﻿using Jvu.TestAutomation.Web.Framework.Extensions;
-using Jvu.TestAutomation.Web.Framework.Models;
-using Jvu.TestAutomation.Web.Framework.Testing;
+﻿using E2e.Automation.Framework.Extensions;
+using E2e.Automation.Framework.Models;
+using E2e.Automation.Framework.Testing;
 
 namespace E2e.Automation.Web.Tests.E2ETests
 {

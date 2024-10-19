@@ -1,4 +1,4 @@
-﻿namespace Jvu.TestAutomation.Web.Framework.Logging
+﻿namespace E2e.Automation.Framework.Logging
 {
   /// ***********************************************************
   /// <author>JVU</author>

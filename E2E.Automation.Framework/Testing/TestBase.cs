@@ -1,4 +1,4 @@
-﻿namespace Jvu.TestAutomation.Web.Framework.Testing
+﻿namespace E2e.Automation.Framework.Testing
 {
   /// ***********************************************************
   /// <author>JVU</author>
