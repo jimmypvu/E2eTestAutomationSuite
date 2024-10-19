@@ -10,6 +10,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Remove="NewFolder\**" />
+		<Compile Remove="Services\**" />
+		<Compile Remove="WebChores\**" />
+		<EmbeddedResource Remove="NewFolder\**" />
+		<EmbeddedResource Remove="Services\**" />
+		<EmbeddedResource Remove="WebChores\**" />
+		<None Remove="NewFolder\**" />
+		<None Remove="Services\**" />
+		<None Remove="WebChores\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="coverlet.collector" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -39,10 +51,8 @@
 	<ItemGroup>
 		<Folder Include="API\" />
 		<Folder Include="DataBase\" />
-		<Folder Include="NewFolder\" />
-		<Folder Include="WebChores\" />
-		<Folder Include="Services\Azure\" />
-		<Folder Include="Services\Local\" />
+		<Folder Include="Web\Services\Azure\" />
+		<Folder Include="Web\Services\Local\" />
 	</ItemGroup>
 
 </Project>
