@@ -1,7 +1,12 @@
 ﻿namespace E2e.Automation.Web.Tests
 {
-  public class AdHocTest
+  /// ***********************************************************
+  /// <author>JVU</author>
+  /// <version>1.0.0</version>
+  /// ***********************************************************
+  public class AdHocFixture
   {
+    /// ***********************************************************
     [Test]
     public async Task A_Test()
     {
