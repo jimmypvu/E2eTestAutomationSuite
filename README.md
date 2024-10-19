@@ -1,1 +1,1 @@
-# E2ETestAutomation README
+# E2ETestAutomation
