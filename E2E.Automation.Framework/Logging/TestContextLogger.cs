@@ -1,4 +1,6 @@
-﻿namespace E2e.Automation.Framework.Logging
+﻿using E2e.Automation.Framework.Web.Extensions;
+
+namespace E2e.Automation.Framework.Logging
 {
   /// ***********************************************************
   /// <author>JVU</author>

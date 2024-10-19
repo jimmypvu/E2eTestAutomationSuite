@@ -17,14 +17,14 @@ namespace E2e.Automation.Framework.Utils.Images
     /// ***********************************************************
     public async Task<int> CompareAndReturnNumberOfMismatchedPixelsAsync(string imagePath1, string imagePath2, BitmapCompareOptions? options = null, List<IgnoreRegion> ignoreRegions = null)
     {
-      // create bitmap images from input images, if ignoring regions create masked bitmap
+      // create bitmap images from input images, if ignoring regions apply regions mask to bitmap
       var bitmap1 = this.CreateColorCorrectedBitmapFromImage(imagePath1, ignoreRegions);
       var bitmap2 = this.CreateColorCorrectedBitmapFromImage(imagePath2, ignoreRegions);
 
-      // images need to be the same size for comparison to work or pixelmatcher will throw; already logging baseline & comparison image paths in extension method
+      // images need to be the same size for comparison to work or pixelmatcher will error
       _log.DebugLine($"- img1 dimensions: {bitmap1.Width} x {bitmap1.Height}");
       _log.DebugLine($"- img2 dimensions: {bitmap2.Width} x {bitmap2.Height}");
-      _log.DebugLine($"comparing images...");
+      _log.WriteLine($"comparing images...");
 
       var image1 = new BitmapImagePBgra32(bitmap1);
       var image2 = new BitmapImagePBgra32(bitmap2);
@@ -50,13 +50,14 @@ namespace E2e.Automation.Framework.Utils.Images
     {
       using (var fs = new FileStream(sourceImagePath, FileMode.Open, FileAccess.Read, FileShare.Read))
       {
+        this._log.DebugLine($" - creating bitmap src img file at\n\t{sourceImagePath.ToDisplayPath()}");
+
         // copy original image onto new bitmap, useIcm true to ensure color consistency across different devices and color profiles
         var bitmap = new Bitmap(fs, true);
 
         if (ignoreRegionsMask != null)
         {
-          this._log.WriteLine($" - creating masked bitmap img from src file at\n\t\t\t{sourceImagePath.ToDisplayPath()}");
-          this._log.WriteLine($" - applying regions mask...");
+          this._log.DebugLine($" - applying regions mask...");
 
           // draw the ignoredRegions mask onto the bitmap -> loop through region area and color the ignored pixels green
           foreach (var region in ignoreRegionsMask)
@@ -71,12 +72,12 @@ namespace E2e.Automation.Framework.Utils.Images
             {
               for (int? y = yMinValue; y < yMaxValue; y++)
               {
-                // pixel is in the excluded area -> color / mask it with green and exclude that point from the visual check (technically still comparing those 'excluded' pixels, but since they are both masked green they are effectively not counted against any comparison differences, ie. greenMaskedPixel vs greenMaskedPixel = pixelsMatch / true)
-                if (ShouldIgnorePixel((int)x, (int)y, ignoreRegionsMask))
+                // pixel is in the excluded area -> mask it with green and exclude that point from the visual check
+                if (this.ShouldIgnorePixel((int)x, (int)y, ignoreRegionsMask))
                 {
                   var maskColor = x % 2 == 0 ? System.Drawing.Color.LimeGreen : System.Drawing.Color.LawnGreen;
 
-                  // lock image bits, LockBits instead of SetPixel for memory optimization (out of memory exceptions during image processing)
+                  // lock image bits
                   var bitmapBits = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
                   try
                   {
@@ -84,6 +85,7 @@ namespace E2e.Automation.Framework.Utils.Images
                     var strideWidth = bitmapBits.Stride;
                     var ptr = bitmapBits.Scan0;
                     var rgbValues = new byte[strideWidth * bitmap.Height];
+
                     // copy original image data
                     Marshal.Copy(ptr, rgbValues, 0, rgbValues.Length);
 
@@ -96,6 +98,7 @@ namespace E2e.Automation.Framework.Utils.Images
                     {
                       rgbValues[i + 3] = maskColor.A;
                     }
+
                     // copy masked pixel data onto new bitmap
                     Marshal.Copy(rgbValues, 0, ptr, rgbValues.Length);
                   }
@@ -157,25 +160,25 @@ namespace E2e.Automation.Framework.Utils.Images
     /// ***********************************************************
     private void CreateHighlightedDifferencesImage(List<Tuple<IntPoint, Color>> differentPixelsList, Bitmap baselineBitmap, string outputPath)
     {
-      using (Bitmap result = new Bitmap(baselineBitmap.Width, baselineBitmap.Height, PixelFormat.Format32bppArgb))
+      using (var result = new Bitmap(baselineBitmap.Width, baselineBitmap.Height, PixelFormat.Format32bppArgb))
       {
         // extract pixel coordinates from diffs list to a hashset for faster lookup
         var differentIntPointsLookupSet = new HashSet<IntPoint>(differentPixelsList.Select(pixel => pixel.Item1));
 
         // lock bits for both baseline and result bitmaps
-        BitmapData baselineData = baselineBitmap.LockBits(new Rectangle(0, 0, baselineBitmap.Width, baselineBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-        BitmapData resultData = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+        var baselineData = baselineBitmap.LockBits(new Rectangle(0, 0, baselineBitmap.Width, baselineBitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+        var resultData = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
         try
         {
           int bytesPerPixel = 4;
-          int baselineStride = baselineData.Stride;
-          int resultStride = resultData.Stride;
+          var baselineStride = baselineData.Stride;
+          var resultStride = resultData.Stride;
           int height = result.Height;
           int width = result.Width;
 
-          byte[] baselinePixels = new byte[baselineStride * height];
-          byte[] resultPixels = new byte[resultStride * height];
+          var baselinePixels = new byte[baselineStride * height];
+          var resultPixels = new byte[resultStride * height];
 
           // copy baseline bitmap data
           Marshal.Copy(baselineData.Scan0, baselinePixels, 0, baselinePixels.Length);
@@ -191,6 +194,7 @@ namespace E2e.Automation.Framework.Utils.Images
               {
                 // highlight if diff pixel
                 var maskColor = x % 2 == 0 ? Color.DeepPink : Color.HotPink;
+
                 resultPixels[index] = maskColor.B;
                 resultPixels[index + 1] = maskColor.G;
                 resultPixels[index + 2] = maskColor.R;
@@ -223,15 +227,16 @@ namespace E2e.Automation.Framework.Utils.Images
     /// ***********************************************************
     private void CreateDifferencesOnlyImage(List<Tuple<IntPoint, System.Drawing.Color>> diffPixelsList, Bitmap baselineBitmap, string outputPath)
     {
-      using (Bitmap result = new Bitmap(baselineBitmap.Width, baselineBitmap.Height, PixelFormat.Format32bppArgb))
+      using (var result = new Bitmap(baselineBitmap.Width, baselineBitmap.Height, PixelFormat.Format32bppArgb))
       {
         // use LockBits for better memory optimization
-        BitmapData bmpData = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+        var bitmapData = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
         try
         {
           int bytesPerPixel = 4;
-          int strideWidth = bmpData.Stride;
-          byte[] pixels = new byte[strideWidth * result.Height];
+          var strideWidth = bitmapData.Stride;
+          var pixels = new byte[strideWidth * result.Height];
 
           foreach (var pixel in diffPixelsList)
           {
@@ -248,11 +253,11 @@ namespace E2e.Automation.Framework.Utils.Images
               pixels[index + 3] = color.A;
             }
           }
-          Marshal.Copy(pixels, 0, bmpData.Scan0, pixels.Length);
+          Marshal.Copy(pixels, 0, bitmapData.Scan0, pixels.Length);
         }
         finally
         {
-          result.UnlockBits(bmpData);
+          result.UnlockBits(bitmapData);
         }
         result.Save(outputPath, ImageFormat.Png);
       }

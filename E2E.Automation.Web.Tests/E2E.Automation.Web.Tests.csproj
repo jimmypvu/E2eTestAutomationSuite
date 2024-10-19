@@ -44,12 +44,10 @@
 		<Folder Include="Accessibility\" />
 		<Folder Include="DataBase\" />
 		<Folder Include="API\" />
+		<Folder Include="Resources\Baselines\DemoVisualBaselinesFixture\Crawl_Pages_And_Check_Baseline_Images\" />
 		<Folder Include="Resources\TestData\E2E\" />
 		<Folder Include="Resources\TestData\API\" />
 		<Folder Include="Resources\TestData\DataBase\" />
-		<Folder Include="Resources\TestData\Accessibility\" />
-		<Folder Include="Resources\TestData\VisualBaseline\" />
-		<Folder Include="VisualBaseline\" />
 	</ItemGroup>
 
 	<ItemGroup>

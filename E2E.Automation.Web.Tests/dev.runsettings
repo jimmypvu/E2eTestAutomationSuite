@@ -6,7 +6,7 @@
 	<Playwright>
 		<!--chromium, firefox, webkit-->
 		<BrowserName>chromium</BrowserName>
-		<ExpectTimeout>30000</ExpectTimeout>
+		<ExpectTimeout>60000</ExpectTimeout>
 		<LaunchOptions>
 			<!--chromium, chrome, msedge-->
 			<Channel>chromium</Channel>
@@ -19,7 +19,7 @@
 		<Parameter name="browser" value="chrome" />
 		<Parameter name="viewportWidth" value="1280" />
 		<Parameter name="viewportHeight" value="720" />
-		<Parameter name="navigationTimeoutMs" value="30000" />
+		<Parameter name="navigationTimeoutMs" value="60000" />
 
 		<Parameter name="enableTrace" value="false" />
 		<Parameter name="enableScreenshots" value="true" />

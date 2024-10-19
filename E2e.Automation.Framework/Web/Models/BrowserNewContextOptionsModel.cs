@@ -1,5 +1,9 @@
-﻿namespace E2e.Automation.Framework.Models
+﻿namespace E2e.Automation.Framework.Web.Models
 {
+  /// ***********************************************************
+  /// <author>JVU</author>
+  /// <version>1.0.0</version>
+  /// ***********************************************************
   public class BrowserNewContextOptionsModel
   {
     public bool AcceptDownloads
