@@ -20,14 +20,8 @@
 
     public IPage Page
     {
-      get
-      {
-        return this._page;
-      }
-      private set
-      {
-        this._page = value;
-      }
+      get => this._page;
+      private set => this._page = value;
     }
 
     public int ViewportWidth
