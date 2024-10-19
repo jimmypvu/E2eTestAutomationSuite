@@ -1,1 +1,1 @@
-# JvuQuality
+# E2ETestAutomation README
