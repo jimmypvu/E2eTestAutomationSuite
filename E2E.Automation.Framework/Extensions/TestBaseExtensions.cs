@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Jvu.TestAutomation.Web.Framework.Pages;
-using Jvu.TestAutomation.Web.Framework.Logging;
-using Jvu.TestAutomation.Web.Framework.Testing;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using System.Runtime.CompilerServices;
+﻿using Jvu.TestAutomation.Web.Framework.Testing;
 
 
 namespace Jvu.TestAutomation.Web.Framework.Extensions

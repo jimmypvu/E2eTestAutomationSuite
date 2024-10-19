@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Jvu.TestAutomation.Web.Framework.Utils.Images
+﻿namespace Jvu.TestAutomation.Web.Framework.Utils.Images
 {
   /// ***********************************************************
   /// <remarks>defines region masks to exclude from images when doing visual comparison with BitmapUtil</remarks>

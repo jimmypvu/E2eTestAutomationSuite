@@ -1,10 +1,8 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using iText.Kernel.Pdf.Canvas.Parser.ClipperLib;
 using StronglyTyped.PixelMatch;
-using Jvu.TestAutomation.Web.Framework.Logging;
 
 namespace Jvu.TestAutomation.Web.Framework.Utils.Images
 {

@@ -1,0 +1,13 @@
+root = true
+
+[*.*]
+enable = true
+command = Edit.FormatDocument
+allowed_extensions = .cs .nunit.cs
+denied_extensions = .js .html
+
+[*.*]
+enable = true
+command = Edit.FormatDocument Analyze.RunDefaultCodeCleanupOnSolution
+allowed_extensions = .cs .nunit.cs
+denied_extensions = .js .html

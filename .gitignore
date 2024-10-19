@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# adhoc & troubleshooting fixtures
+/E2ETestAutomation/E2E.Automation.Web.Tests/AdHocTest.cs

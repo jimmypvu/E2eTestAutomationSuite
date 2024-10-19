@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Playwright.NUnit;
-using Jvu.TestAutomation.Web.Framework.Extensions;
-using Jvu.TestAutomation.Web.Framework.Models;
-using Jvu.TestAutomation.Web.Framework.Logging;
-using System.Runtime.CompilerServices;
-using System.Threading.Channels;
-using static iText.Kernel.Pdf.Colorspace.PdfSpecialCs;
-using Microsoft.Playwright;
-
-namespace Jvu.TestAutomation.Web.Framework.Testing
+﻿namespace Jvu.TestAutomation.Web.Framework.Testing
 {
   /// ***********************************************************
   /// <author>JVU</author>

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Jvu.TestAutomation.Web.Framework.Testing;
-using Microsoft.Playwright.NUnit;
-using Microsoft.Playwright;
+﻿using Jvu.TestAutomation.Web.Framework.Extensions;
 using Jvu.TestAutomation.Web.Framework.Models;
-using Jvu.TestAutomation.Web.Framework.Extensions;
+using Jvu.TestAutomation.Web.Framework.Testing;
 
 namespace Jvu.TestAutomation.Web.Tests.E2ETests
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Jvu.TestAutomation.Web.Framework.Models
+﻿namespace Jvu.TestAutomation.Web.Framework.Models
 {
   /// ***********************************************************
   /// <author>JVU</author>

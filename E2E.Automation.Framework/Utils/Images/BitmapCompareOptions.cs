@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Jvu.TestAutomation.Web.Framework.Utils.Images
+﻿namespace Jvu.TestAutomation.Web.Framework.Utils.Images
 {
   /// ***********************************************************
   /// <author>JVU</author>

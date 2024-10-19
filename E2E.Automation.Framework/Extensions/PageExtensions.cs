@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Jvu.TestAutomation.Web.Framework.Testing;
-using Jvu.TestAutomation.Web.Framework.Pages;
-using Jvu.TestAutomation.Web.Framework.Logging;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 using Deque.AxeCore.Commons;
 using Deque.AxeCore.Playwright;
-using System.Text.RegularExpressions;
 
 namespace Jvu.TestAutomation.Web.Framework.Extensions
 {

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Playwright;
-using Jvu.TestAutomation.Web.Framework.Testing;
-using Jvu.TestAutomation.Web.Framework.Logging;
-using System.Runtime.CompilerServices;
+﻿using Jvu.TestAutomation.Web.Framework.Testing;
 
 namespace Jvu.TestAutomation.Web.Framework.Pages
 {

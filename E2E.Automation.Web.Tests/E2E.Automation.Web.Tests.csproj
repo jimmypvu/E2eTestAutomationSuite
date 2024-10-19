@@ -10,12 +10,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="TestData\**" />
-	  <EmbeddedResource Remove="TestData\**" />
-	  <None Remove="TestData\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="coverlet.collector" Version="6.0.2">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -39,7 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\E2E.TestAutomation.Web.Framework\Jvu.TestAutomation.Web.Framework.csproj" />
+		<ProjectReference Include="..\E2E.Automation.Framework\E2E.Automation.Framework.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -47,16 +41,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="AccessbilityTests\" />
-		<Folder Include="DatabaseTests\" />
-		<Folder Include="ApiTests\" />
-		<Folder Include="VisualBaselineTests\BaselineImages\" />
+		<Folder Include="Accessibility\" />
+		<Folder Include="DataBase\" />
+		<Folder Include="API\" />
+		<Folder Include="Resources\TestData\E2E\" />
+		<Folder Include="Resources\TestData\API\" />
+		<Folder Include="Resources\TestData\DataBase\" />
+		<Folder Include="Resources\TestData\Accessibility\" />
+		<Folder Include="Resources\TestData\VisualBaseline\" />
+		<Folder Include="VisualBaseline\" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="dev.runsettings">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+		<None Update="dev.runsettings">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
 	</ItemGroup>
 
 </Project>
