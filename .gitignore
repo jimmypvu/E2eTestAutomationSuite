@@ -363,4 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # adhoc & troubleshooting fixtures
-../E2e.Automation.Web.Tests/AdHocFixture.nunit.cs
+E2e.Automation.Web.Tests/AdHocFixture.nunit.cs
+./E2e.Automation.Web.Tests/AdHocFixture.nunit.cs
