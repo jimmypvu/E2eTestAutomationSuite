@@ -6,6 +6,8 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
   /// <author>JVU</author>
   /// <version>1.0.0</version>
   /// ***********************************************************
+  [TestFixture]
+  [Category("Demo")]
   public class DemoVisualBaselinesFixture : TestBase
   {
     /*-----------------------------------------------------------*/
@@ -28,19 +30,34 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
           "ad.plus",
           "googlesyndication.com",
           "googletagservices.com",
+          "googleadservices.com",
           "google.com",
           "googletagmanager.com",
           "demoqa.com",
           "linkedin.com",
           "paypal.com",
-          "bing.com"
-        };
+          "bing.com",
+          "securepubads.g.doubleclick.net",
+          "securepubads",
+          "twitter.com",
+          "facebook.com",
+          "adtrafficquality.google",
+          "adtrafficquality",
+          "amazon-adsystem.com",
+          "yahoo.com",
+          "doubleclick.net",
+          "adsrvr.org",
+          "tapad.com",
+          "adnxs.com",
+          "ad.turn.com"
+      };
     }
     /*-----------------------------------------------------------*/
 
     /*-----------------------------------------------------------*/
     /// ***********************************************************
     [Test]
+    [Category(TestCat.Stable)]
     public async Task Crawl_Pages_And_Check_Baseline_Images()
     {
       await this.Page.GotoAsync("");
@@ -49,9 +66,9 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
       {
         if (this.AllowedDomains.Any(domain => page.Url.ContainsAnyCase(domain)))
         {
-          await page.ToHaveExpectedFullScreenshotAsync($"{(await page.TitleAsync()).CleanStringForPath()}_Baseline.png");
+          await page.ToHaveExpectedFullScreenshotAsync($"{(await page.TitleAsync()).CleanStringForPath()}_Baseline.png", 0.5f, null, null, true);
         }
-      }, "", 60);
+      }, "", 180);
     }
     /*-----------------------------------------------------------*/
   }

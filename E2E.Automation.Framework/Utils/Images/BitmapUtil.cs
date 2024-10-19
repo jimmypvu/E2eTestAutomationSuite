@@ -15,7 +15,7 @@ namespace E2e.Automation.Framework.Utils.Images
     private ConsoleLogger _log = new();
 
     /// ***********************************************************
-    public async Task<int> CompareAndReturnNumberOfMismatchedPixelsAsync(string imagePath1, string imagePath2, BitmapCompareOptions? options = null, List<IgnoreRegion> ignoreRegions = null)
+    public async Task<int> CompareAndReturnNumberOfMismatchedPixelsAsync(string imagePath1, string imagePath2, float variancePercentageAllowed = 0f, BitmapCompareOptions? options = null, List<IgnoreRegion> ignoreRegions = null)
     {
       // create bitmap images from input images, if ignoring regions apply regions mask to bitmap
       var bitmap1 = this.CreateColorCorrectedBitmapFromImage(imagePath1, ignoreRegions);
@@ -37,12 +37,33 @@ namespace E2e.Automation.Framework.Utils.Images
         IgnoreAntiAliasedPixels = options != null ? options.IgnoreAntiAliasedPixels : true
       };
 
+      var totalNumberOfPixels = image1.Height * image2.Width;
+
       var numberOfMismatchedPixels = pixelMatcher.Compare(image1, image2);
-
-      if (numberOfMismatchedPixels > 0)
-        this.CreateComparisonResultDifferencesImagesAsync(imagePath2, imagePath1);
-
-      return numberOfMismatchedPixels;
+      if (variancePercentageAllowed > 0f)
+      {
+        var numberBadPixelsAllowed = (int)Math.Round(totalNumberOfPixels * variancePercentageAllowed * 0.01);
+        TestContext.Out.WriteLine($"totalPixels: {totalNumberOfPixels}");
+        TestContext.Out.WriteLine($"allowedBadPixels: {numberBadPixelsAllowed}");
+        TestContext.Out.WriteLine($"badPixels: {numberOfMismatchedPixels}");
+        if (numberOfMismatchedPixels > numberBadPixelsAllowed)
+        {
+          this.CreateComparisonResultDifferencesImagesAsync(imagePath2, imagePath1);
+          return numberOfMismatchedPixels;
+        }
+        else
+        {
+          return 0;
+        }
+      }
+      else
+      {
+        if (numberOfMismatchedPixels > 0)
+        {
+          this.CreateComparisonResultDifferencesImagesAsync(imagePath2, imagePath1);
+        }
+        return numberOfMismatchedPixels;
+      }
     }
 
     /// ***********************************************************

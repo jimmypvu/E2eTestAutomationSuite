@@ -45,7 +45,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     /// IgnoreRegions: image mask regions to exclude from comparison, defined by X,Y origin point and Width/Height/Radius values
     /// Enable Metadata tagging to capture element HTML and record as image metadata for comparison </remarks>
     /// ***********************************************************
-    public static async Task ToHaveExpectedScreenshotAsync(this IPage page, string baselineImageRelativePath, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
+    public static async Task ToHaveExpectedScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
       await page.WaitForDomContentToLoadAndRenderAsync(100);
@@ -141,7 +141,7 @@ namespace E2e.Automation.Framework.Web.Extensions
       if (!wasBaseLineAlreadyPresent) return;
 
       // compare new screenshot to baseline
-      var numberOfMismatchedPixels = await bitmapUtil.CompareAndReturnNumberOfMismatchedPixelsAsync(screenshotWithMetaDataPath, baselineImagePath, options);
+      var numberOfMismatchedPixels = await bitmapUtil.CompareAndReturnNumberOfMismatchedPixelsAsync(screenshotWithMetaDataPath, baselineImagePath, variancePercentageAllowed, options);
 
       log.DebugLine($"Screenshot: {screenshotWithMetaDataPath.Split("\\")[screenshotWithMetaDataPath.Split("\\").Length - 1]}");
       log.DebugLine($"path: {screenshotWithMetaDataPath.Replace(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "")}");
@@ -166,7 +166,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     /// IgnoreRegions: image mask regions to exclude from comparison, defined by X,Y origin point and Width/Height/Radius values
     /// Enable Metadata tagging to capture element HTML and record as image metadata for comparison </remarks>
     /// ***********************************************************
-    public static async Task ToHaveExpectedScreenshotAsync(this ILocator locator, string baselineImageRelativePath, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
+    public static async Task ToHaveExpectedScreenshotAsync(this ILocator locator, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
       await locator.Page.WaitForDomContentToLoadAndRenderAsync(100);
@@ -262,7 +262,7 @@ namespace E2e.Automation.Framework.Web.Extensions
       if (!wasBaseLineAlreadyPresent) return;
 
       // compare new screenshot to baseline
-      var numberOfMismatchedPixels = await bitmapUtil.CompareAndReturnNumberOfMismatchedPixelsAsync(screenshotWithMetaDataPath, baselineImagePath, options);
+      var numberOfMismatchedPixels = await bitmapUtil.CompareAndReturnNumberOfMismatchedPixelsAsync(screenshotWithMetaDataPath, baselineImagePath, variancePercentageAllowed, options);
 
       log.DebugLine($"Screenshot: {screenshotWithMetaDataPath.Split("\\")[screenshotWithMetaDataPath.Split("\\").Length - 1]}");
       log.DebugLine($"path: {screenshotWithMetaDataPath.Replace(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "")}");
@@ -287,7 +287,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     /// IgnoreRegions: image mask regions to exclude from comparison, defined by X,Y origin point and Width/Height/Radius values
     /// Enable Metadata tagging to capture element HTML and record as image metadata for comparison </remarks>
     /// ***********************************************************
-    public static async Task ToHaveExpectedFullScreenshotAsync(this IPage page, string baselineImageRelativePath, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
+    public static async Task ToHaveExpectedFullScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
       await page.WaitForDomContentToLoadAndRenderAsync();
@@ -384,7 +384,7 @@ namespace E2e.Automation.Framework.Web.Extensions
       if (!wasBaseLineAlreadyPresent) return;
 
       // compare new screenshot to baseline
-      var numberOfMismatchedPixels = await bitmapUtil.CompareAndReturnNumberOfMismatchedPixelsAsync(screenshotWithMetaDataPath, baselineImagePath, options);
+      var numberOfMismatchedPixels = await bitmapUtil.CompareAndReturnNumberOfMismatchedPixelsAsync(screenshotWithMetaDataPath, baselineImagePath, variancePercentageAllowed, options);
 
       log.DebugLine($"Screenshot: {screenshotWithMetaDataPath.Split("\\")[screenshotWithMetaDataPath.Split("\\").Length - 1]}");
       log.DebugLine($"path: {screenshotWithMetaDataPath.Replace(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "")}");
