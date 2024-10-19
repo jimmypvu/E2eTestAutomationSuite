@@ -33,7 +33,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\E2E.Automation.Framework\E2E.Automation.Framework.csproj" />
+		<ProjectReference Include="..\E2e.Automation.Framework\E2e.Automation.Framework.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

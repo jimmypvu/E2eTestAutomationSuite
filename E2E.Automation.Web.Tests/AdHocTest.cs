@@ -1,4 +1,4 @@
-﻿namespace Jvu.TestAutomation.Web.Tests
+﻿namespace E2e.Automation.Web.Tests
 {
   public class AdHocTest
   {

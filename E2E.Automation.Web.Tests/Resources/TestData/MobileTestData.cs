@@ -1,4 +1,4 @@
-﻿namespace Jvu.TestAutomation.Web.Tests.Resources.TestData
+﻿namespace E2e.Automation.Web.Tests.Resources.TestData
 {
   /// ***********************************************************
   /// <author>JVU</author>

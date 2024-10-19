@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E2E.Automation.Framework", "E2E.Automation.Framework\E2E.Automation.Framework.csproj", "{4A2897AA-CCF1-44B9-A4A1-E91F5C0E65AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E2e.Automation.Framework", "E2E.Automation.Framework\E2e.Automation.Framework.csproj", "{4A2897AA-CCF1-44B9-A4A1-E91F5C0E65AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E2E.Automation.Web.Tests", "E2E.Automation.Web.Tests\E2E.Automation.Web.Tests.csproj", "{3AFAA417-571F-4735-AAAE-65ACE83E05CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E2e.Automation.Web.Tests", "E2E.Automation.Web.Tests\E2e.Automation.Web.Tests.csproj", "{3AFAA417-571F-4735-AAAE-65ACE83E05CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

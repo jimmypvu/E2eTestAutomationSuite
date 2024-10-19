@@ -2,7 +2,7 @@
 using Jvu.TestAutomation.Web.Framework.Models;
 using Jvu.TestAutomation.Web.Framework.Testing;
 
-namespace Jvu.TestAutomation.Web.Tests.E2ETests
+namespace E2e.Automation.Web.Tests.E2ETests
 {
   /// ***********************************************************
   /// <author>JVU</author>
