@@ -37,6 +37,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<Folder Include="API\" />
+		<Folder Include="DataBase\" />
+		<Folder Include="NewFolder\" />
 		<Folder Include="WebChores\" />
 		<Folder Include="Services\Azure\" />
 		<Folder Include="Services\Local\" />
