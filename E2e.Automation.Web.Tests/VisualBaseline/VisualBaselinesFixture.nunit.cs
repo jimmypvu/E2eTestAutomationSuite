@@ -7,7 +7,8 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
   /// <version>1.0.0</version>
   /// ***********************************************************
   [TestFixture]
-  [Category("Demo")]
+  [Category(TestCat.Demo)]
+  [Category(TestCat.Visual)]
   public class VisualBaselinesFixture : TestBase
   {
     /*-----------------------------------------------------------*/

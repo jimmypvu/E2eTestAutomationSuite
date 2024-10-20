@@ -151,7 +151,7 @@ namespace E2e.Automation.Framework.Web.Extensions
 
       // if anything changed visually between this screenshot and the last baseline, compare the html metadata and return the different nodes / node differences
       if (numberOfMismatchedPixels > 0 && enableMetaDataTagging)
-        await baselineImagePath.CompareImageMetadataAndDisplayHtmlNodeDiffsAsync(screenshotWithMetaDataPath, log);
+        baselineImagePath.CompareImageMetadataAndDisplayHtmlNodeDiffs(screenshotWithMetaDataPath, log);
 
       // assert screenshots match / number of mismatched pixels = 0
       Assert.That(numberOfMismatchedPixels == 0, $"Page screenshot did not match the expected baseline image! # of mismatched pixels: {numberOfMismatchedPixels}\n\nss:\n{screenshotWithMetaDataPath} \nvs baseline:\n{baselineImagePath}");
@@ -272,7 +272,7 @@ namespace E2e.Automation.Framework.Web.Extensions
 
       // if anything changed visually between this screenshot and the last baseline, compare the html metadata and return the different nodes / node differences
       if (numberOfMismatchedPixels > 0 && enableMetaDataTagging)
-        await baselineImagePath.CompareImageMetadataAndDisplayHtmlNodeDiffsAsync(screenshotWithMetaDataPath, log);
+        baselineImagePath.CompareImageMetadataAndDisplayHtmlNodeDiffs(screenshotWithMetaDataPath, log);
 
       // assert screenshots match / number of mismatched pixels = 0
       Assert.That(numberOfMismatchedPixels == 0, $"Element screenshot did not match the expected baseline image! # of mismatched pixels: {numberOfMismatchedPixels}\n\nss:\n{screenshotWithMetaDataPath} \nvs baseline:\n{baselineImagePath}");
@@ -394,7 +394,7 @@ namespace E2e.Automation.Framework.Web.Extensions
 
       // if anything changed visually between this screenshot and the last baseline, compare the html metadata and return the different nodes / node differences
       if (numberOfMismatchedPixels > 0 && enableMetaDataTagging)
-        await baselineImagePath.CompareImageMetadataAndDisplayHtmlNodeDiffsAsync(screenshotWithMetaDataPath, log);
+        baselineImagePath.CompareImageMetadataAndDisplayHtmlNodeDiffs(screenshotWithMetaDataPath, log);
 
       // assert screenshots match / number of mismatched pixels = 0
       Assert.That(numberOfMismatchedPixels == 0, $"Page screenshot did not match the expected baseline image! # of mismatched pixels: {numberOfMismatchedPixels}\n\nss:\n{screenshotWithMetaDataPath} \nvs baseline:\n{baselineImagePath}");
@@ -759,7 +759,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     }
 
     /// ***********************************************************
-    private static async Task CompareImageMetadataAndDisplayHtmlNodeDiffsAsync(this string taggedBaselineImagePath, string taggedComparisonScreenshotPath, ILogger log)
+    private static void CompareImageMetadataAndDisplayHtmlNodeDiffs(this string taggedBaselineImagePath, string taggedComparisonScreenshotPath, ILogger log)
     {
       // compare baseline and screenshot metadata to see what nodes changed
       var baselinePageHtml = ImageMetaDataHandler.ReadAndReturnMetaDataFromFileDescription(taggedBaselineImagePath);
