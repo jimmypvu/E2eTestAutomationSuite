@@ -289,7 +289,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     public static async Task ToHaveExpectedFullScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await page.WaitForDomContentToLoadAndRenderAsync();
+      await page.WaitForDomContentToLoadAndRenderAsync(100);
 
       var log = new TestContextLogger();
       var dimensionsPrefix = $"{TestContext.Parameters["viewportWidth"]}x{TestContext.Parameters["viewportHeight"]}_";
