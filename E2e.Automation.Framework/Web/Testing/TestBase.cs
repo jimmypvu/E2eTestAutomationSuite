@@ -18,9 +18,9 @@ namespace E2e.Automation.Framework.Web.Testing
     private IPage _page;
     public IPage Page { get => _page; private set => _page = value; }
 
-    public BrowserTypeLaunchOptions? BrowserLaunchOptions { get; set; }
-    public BrowserNewContextOptions? BrowserContextOptions { get; private set; }
-    public Tuple<BrowserNewContextOptions, string>? AdditionalContextOptionsAndContextName { get; set; }
+    public virtual BrowserTypeLaunchOptions? BrowserLaunchOptions { get; set; }
+    public virtual BrowserNewContextOptions? BrowserContextOptions { get; private set; }
+    public virtual Tuple<BrowserNewContextOptions, string>? AdditionalContextOptionsAndContextName { get; set; }
 
     public string TestName { get; private set; }
     public string TestFixtureName { get; private set; }

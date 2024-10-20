@@ -13,7 +13,7 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
     /*-----------------------------------------------------------*/
     public override string BaseUrl => "https://toolsqa.com/";
 
-    public Tuple<BrowserNewContextOptions, string>? AdditionalContextOptionsAndContextName =>
+    public override Tuple<BrowserNewContextOptions, string>? AdditionalContextOptionsAndContextName =>
       Tuple.Create(new BrowserNewContextOptions()
       {
         Locale = "es-ES"
