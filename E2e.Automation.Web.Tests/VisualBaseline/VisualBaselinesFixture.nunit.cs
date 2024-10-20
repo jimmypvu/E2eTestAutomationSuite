@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using E2e.Automation.Framework.Extensions;
-using E2e.Automation.Framework.Web.Extensions;
+﻿using E2e.Automation.Framework.Extensions;
 
 namespace E2e.Automation.Web.Tests.VisualBaseline
 {
@@ -16,11 +14,9 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
     /*-----------------------------------------------------------*/
     public override string BaseUrl => "https://toolsqa.com/";
 
-    public override Tuple<BrowserNewContextOptions, string>? AdditionalContextOptionsAndContextName =>
-      Tuple.Create(new BrowserNewContextOptions()
-      {
-        Locale = "en-US"
-      }, "EnglishLocale");
+    // testcasesource
+    public static IEnumerable<TestCaseData> DeviceNames => MobileTestData.GetDeviceNamesAsync().Result.Select(deviceName =>
+        new TestCaseData(deviceName).SetName($"{deviceName}"));
 
     public override string HostFilePath => $"{this.GetTestResourcesFolderPath()}\\testqaadservers.txt";
     /*-----------------------------------------------------------*/
@@ -37,9 +33,22 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
       {
         if (this.AllowedDomains.Any(domain => page.Url.ContainsAnyCase(domain)))
         {
-          await page.ToHaveExpectedFullScreenshotAsync($"{(await page.TitleAsync()).CleanStringForPath()}_Baseline.png", 0.5f, null, null, true);
+          await page.ToHaveExpectedFullScreenshotAsync($"{(await page.TitleAsync()).CleanStringForPath()}_Baseline.png");
         }
       }, "", 90);
+    }
+
+    /// ***********************************************************
+    [Test]
+    [TestCaseSource(nameof(DeviceNames))]
+    [Category(TestCat.Stable)]
+    [Category(TestCat.Mobile)]
+    public async Task Launch_Mobile_Page_And_Check_Baseline_Image(string deviceName)
+    {
+      var mobilePage = await this.LaunchMobilePageInNewContextAsync(deviceName);
+      await mobilePage.GotoAsync("");
+
+      await mobilePage.ToHaveExpectedMobileScreenshotAsync($"{(await mobilePage.TitleAsync()).CleanStringForPath()}_Baseline.png", deviceName);
     }
     /*-----------------------------------------------------------*/
   }

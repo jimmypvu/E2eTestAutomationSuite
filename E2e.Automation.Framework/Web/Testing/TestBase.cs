@@ -26,6 +26,9 @@ namespace E2e.Automation.Framework.Web.Testing
     public string TestName { get; private set; }
     public string TestFixtureName { get; private set; }
     public new string BrowserName { get; private set; }
+    public int ViewportWidth { get; set; }
+    public int ViewportHeight { get; set; }
+    public string DeviceName { get; set; }
 
     public virtual string BaseUrl { get; set; }
     public virtual List<string> AllowedDomains { get; set; }
@@ -164,6 +167,7 @@ namespace E2e.Automation.Framework.Web.Testing
 
       var mobileContext = await Browser.NewContextAsync(device);
       this.OpenBrowserContextsToContextNameMap.Add(mobileContext, deviceName);
+      this.DeviceName = deviceName;
 
       return mobileContext;
     }

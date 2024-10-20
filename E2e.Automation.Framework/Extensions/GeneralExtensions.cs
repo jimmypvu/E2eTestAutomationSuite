@@ -144,10 +144,10 @@ namespace E2e.Automation.Framework.Extensions
     }
 
     /// ***********************************************************
-    public static string CleanStringForPath(this string input)
+    public static string CleanStringForPath(this string? input)
     {
       if (string.IsNullOrEmpty(input))
-        return input;
+        return "";
 
       return Regex.Replace(input, @"[^a-zA-Z0-9_\s-]", string.Empty);
     }

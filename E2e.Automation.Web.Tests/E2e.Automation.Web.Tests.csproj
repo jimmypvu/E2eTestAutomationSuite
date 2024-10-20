@@ -33,10 +33,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\E2e.Automation.Framework\E2e.Automation.Framework.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<Using Include="NUnit.Framework" />
 	</ItemGroup>
 
@@ -44,10 +40,14 @@
 		<Folder Include="Accessibility\" />
 		<Folder Include="DataBase\" />
 		<Folder Include="API\" />
-		<Folder Include="Resources\Baselines\DemoVisualBaselinesFixture\Crawl_Pages_And_Check_Baseline_Images\" />
-		<Folder Include="Resources\TestData\E2E\" />
+		<Folder Include="Resources\Baselines\DemoTestFixture\" />
+		<Folder Include="Resources\TestData\Web\" />
 		<Folder Include="Resources\TestData\API\" />
 		<Folder Include="Resources\TestData\DataBase\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\E2e.Automation.Framework\E2e.Automation.Framework.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

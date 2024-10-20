@@ -44,13 +44,13 @@ namespace E2e.Automation.Framework.Web.Extensions
     /// IgnoreRegions: image mask regions to exclude from comparison, defined by X,Y origin point and Width/Height/Radius values
     /// Enable Metadata tagging to capture element HTML and record as image metadata for comparison </remarks>
     /// ***********************************************************
-    public static async Task ToHaveExpectedScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
+    public static async Task ToHaveExpectedScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await page.WaitForDomContentToLoadAndRenderAsync(100);
+      await page.WaitForDomContentToLoadAndRenderAsync(500);
 
       var log = new TestContextLogger();
-      var dimensionsPrefix = $"{TestContext.Parameters["viewportWidth"]}x{TestContext.Parameters["viewportHeight"]}_";
+      var dimensionsPrefix = $"{page.ViewportSize.Width}x{page.ViewportSize.Height}_";
 
       var testFixtureParts = TestContext.CurrentContext.Test.ClassName.Split('.');
       var testFixture = testFixtureParts[testFixtureParts.Length - 1];
@@ -165,13 +165,13 @@ namespace E2e.Automation.Framework.Web.Extensions
     /// IgnoreRegions: image mask regions to exclude from comparison, defined by X,Y origin point and Width/Height/Radius values
     /// Enable Metadata tagging to capture element HTML and record as image metadata for comparison </remarks>
     /// ***********************************************************
-    public static async Task ToHaveExpectedScreenshotAsync(this ILocator locator, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
+    public static async Task ToHaveExpectedScreenshotAsync(this ILocator locator, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await locator.Page.WaitForDomContentToLoadAndRenderAsync(100);
+      await locator.Page.WaitForDomContentToLoadAndRenderAsync(500);
 
       var log = new TestContextLogger();
-      var dimensionsPrefix = $"{TestContext.Parameters["viewportWidth"]}x{TestContext.Parameters["viewportHeight"]}_";
+      var dimensionsPrefix = $"{locator.Page.ViewportSize.Width}x{locator.Page.ViewportSize.Height}_";
 
       var testFixtureParts = TestContext.CurrentContext.Test.ClassName.Split('.');
       var testFixture = testFixtureParts[testFixtureParts.Length - 1];
@@ -286,13 +286,13 @@ namespace E2e.Automation.Framework.Web.Extensions
     /// IgnoreRegions: image mask regions to exclude from comparison, defined by X,Y origin point and Width/Height/Radius values
     /// Enable Metadata tagging to capture element HTML and record as image metadata for comparison </remarks>
     /// ***********************************************************
-    public static async Task ToHaveExpectedFullScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = false)
+    public static async Task ToHaveExpectedFullScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await page.WaitForDomContentToLoadAndRenderAsync(100);
+      await page.WaitForDomContentToLoadAndRenderAsync(500);
 
       var log = new TestContextLogger();
-      var dimensionsPrefix = $"{TestContext.Parameters["viewportWidth"]}x{TestContext.Parameters["viewportHeight"]}_";
+      var dimensionsPrefix = $"{page.ViewportSize.Width}x{page.ViewportSize.Height}_";
 
       var testFixtureParts = TestContext.CurrentContext.Test.ClassName.Split('.');
       var testFixture = testFixtureParts[testFixtureParts.Length - 1];
@@ -300,6 +300,128 @@ namespace E2e.Automation.Framework.Web.Extensions
 
       // check if baseline image already exists, if it does take a screenshot of the page and compare it to the baseline, otherwise save screenshot as the new baseline
       var baselineImagePath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}\\Resources\\Baselines\\{testFixture}\\{testName}\\{TestContext.Parameters["browser"]}\\fulls\\{dimensionsPrefix}{baselineImageRelativePath}";
+
+      if (ignoreRegions != null)
+        baselineImagePath = baselineImagePath.Replace("_Baseline", "_Unmasked_Baseline");
+
+      var wasBaseLineAlreadyPresent = File.Exists(baselineImagePath);
+
+      // determine path for the raw screenshot image without html metadata
+      var screenshotFileRelativePath = baselineImageRelativePath.Replace("_Baseline", "_PageComparison_NoMetaData");
+      var screenshotPath = wasBaseLineAlreadyPresent ? $"{Directory.GetCurrentDirectory()}\\screenshots\\{testFixture}\\{testName}\\{DateTime.Now:yyMMdd_HHmmss}_{screenshotFileRelativePath}" : baselineImagePath.Replace("_Baseline.png", "_Baseline_NoMetaData.png");
+
+      var baselineDisplayPath = baselineImagePath.Replace($"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}", "");
+
+      log.WriteLine("");
+      log.WriteLine($"comparing Page screenshot to baseline image...\n\tpage: {page.Url}");
+
+      if (options != null)
+      {
+        log.DebugLine("compare options: ");
+        log.DebugLine($"SensitivityThreshold = {options.SensitivityThreshold}");
+        log.DebugLine($"IgnoreAntiAliasedPixels = {options.IgnoreAntiAliasedPixels}");
+      }
+      else
+      {
+        log.DebugLine("compare options: ");
+        log.DebugLine($"SensitivityThreshold = 0.1f");
+        log.DebugLine($"IgnoreAntiAliasedPixels = True");
+      }
+
+      if (!wasBaseLineAlreadyPresent)
+      {
+        log.WriteLine($"baseline image did not exist!");
+        log.WriteLine($"- creating new baseline image at \n\t{baselineDisplayPath}");
+      }
+
+      // take full page screenshot
+      await page.ScreenshotAsync(new()
+      {
+        Path = screenshotPath,
+        FullPage = true
+      });
+      await screenshotPath.SoftWaitUntilFileExistsAsync();
+
+      var bitmapUtil = new BitmapUtil();
+
+      // apply image mask if any before tagging html metadata
+      if (ignoreRegions != null)
+      {
+        var maskedAndUntaggedScreenshotPath = await bitmapUtil.ApplyImageMaskAndOutputToPathAsync(ignoreRegions, screenshotPath, wasBaseLineAlreadyPresent);
+        screenshotPath = maskedAndUntaggedScreenshotPath;
+      }
+
+      string screenshotWithMetaDataPath = screenshotPath;
+      if (enableMetaDataTagging)
+      {
+        // add metadata to the screenshot
+        var pageMetaData = (await page.Locator("body").InnerHTMLAsync()).Trim();
+        screenshotWithMetaDataPath = screenshotPath.Replace("_NoMetaData", "");
+
+        await ImageMetaDataHandler.AddMetaDataToFileDescriptionAndWriteToPathAsync(screenshotPath, screenshotWithMetaDataPath, pageMetaData);
+
+        // delete the image without metadata
+        if (ImageMetaDataHandler.ReadAndReturnMetaDataFromFileDescription(screenshotWithMetaDataPath).IsNotNullOrWhiteSpace())
+          File.Delete(screenshotPath);
+      }
+      else
+      {
+        screenshotWithMetaDataPath = screenshotPath.Replace("_NoMetaData", "");
+        if (File.Exists(screenshotPath) && !File.Exists(screenshotWithMetaDataPath))
+        {
+          File.Move(screenshotPath, screenshotWithMetaDataPath);
+        }
+        else
+        {
+          File.Delete(screenshotPath);
+        }
+      }
+
+      if (File.Exists(baselineImagePath) && !wasBaseLineAlreadyPresent && screenshotWithMetaDataPath.EqualsAnyCase(baselineImagePath))
+        log.WriteLine($"- baseline image created");
+
+      if (!wasBaseLineAlreadyPresent) return;
+
+      // compare new screenshot to baseline
+      var numberOfMismatchedPixels = await bitmapUtil.CompareAndReturnNumberOfMismatchedPixelsAsync(screenshotWithMetaDataPath, baselineImagePath, variancePercentageAllowed, options);
+
+      log.DebugLine($"Screenshot: {screenshotWithMetaDataPath.Split("\\")[screenshotWithMetaDataPath.Split("\\").Length - 1]}");
+      log.DebugLine($"path: {screenshotWithMetaDataPath.Replace(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "")}");
+      log.DebugLine($"Baseline: {baselineImagePath.Split("\\")[baselineImagePath.Split("\\").Length - 1]}");
+      log.DebugLine($"path: {baselineDisplayPath}");
+      log.DebugLine("");
+      log.WriteLine($"# of mismatched pixels: {numberOfMismatchedPixels}");
+
+      // if anything changed visually between this screenshot and the last baseline, compare the html metadata and return the different nodes / node differences
+      if (numberOfMismatchedPixels > 0 && enableMetaDataTagging)
+        baselineImagePath.CompareImageMetadataAndDisplayHtmlNodeDiffs(screenshotWithMetaDataPath, log);
+
+      // assert screenshots match / number of mismatched pixels = 0
+      Assert.That(numberOfMismatchedPixels == 0, $"Page screenshot did not match the expected baseline image! # of mismatched pixels: {numberOfMismatchedPixels}\n\nss:\n{screenshotWithMetaDataPath} \nvs baseline:\n{baselineImagePath}");
+    }
+
+    /// ***********************************************************
+    /// <remarks>Naming convention: baseline image file names should end with "_Baseline.png"
+    /// BitmapCompareOptions: options for bitmap comparison, can set sensitivity threshold from 0 to 1 
+    /// (lower values more sensitive to pixel differences) and anti-aliasing mode (true will exclude anti-aliased pixels from 
+    /// image comparison). Uses default pixelmatch compare options if not provided
+    /// IgnoreRegions: image mask regions to exclude from comparison, defined by X,Y origin point and Width/Height/Radius values
+    /// Enable Metadata tagging to capture element HTML and record as image metadata for comparison </remarks>
+    /// ***********************************************************
+    public static async Task ToHaveExpectedMobileScreenshotAsync(this IPage page, string baselineImageRelativePath, string deviceNamePreifx, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
+    {
+      // ensure page is fully loaded, all images and dom content are loaded and rendered
+      await page.WaitForDomContentToLoadAndRenderAsync(500);
+
+      var log = new TestContextLogger();
+      var dimensionsPrefix = $"{page.ViewportSize.Height}x{page.ViewportSize.Width}_";
+
+      var testFixtureParts = TestContext.CurrentContext.Test.ClassName.Split('.');
+      var testFixture = testFixtureParts[testFixtureParts.Length - 1];
+      var testName = TestContext.CurrentContext.Test.MethodName;
+
+      // check if baseline image already exists, if it does take a screenshot of the page and compare it to the baseline, otherwise save screenshot as the new baseline
+      var baselineImagePath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}\\Resources\\Baselines\\{testFixture}\\{testName}\\{TestContext.Parameters["browser"]}\\mobile\\{deviceNamePreifx}_{dimensionsPrefix}{baselineImageRelativePath}";
 
       if (ignoreRegions != null)
         baselineImagePath = baselineImagePath.Replace("_Baseline", "_Unmasked_Baseline");
