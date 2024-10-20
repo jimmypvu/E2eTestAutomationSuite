@@ -11,6 +11,7 @@ namespace E2e.Automation.Framework.Web.Testing
   {
     /*-----------------------------------------------------------*/
     private TestContextLogger _log = new();
+    private List<string> _blockedDomains => new List<string>(File.ReadAllLines(this.HostFilePath));
 
     public IBrowser Browser { get; private set; }
 
@@ -27,8 +28,9 @@ namespace E2e.Automation.Framework.Web.Testing
     public new string BrowserName { get; private set; }
 
     public virtual string BaseUrl { get; set; }
-    public List<string> AllowedDomains { get; set; }
-    public List<string> BlockedDomains { get; set; }  // add known ad domains in the child test class setup method
+    public virtual List<string> AllowedDomains { get; set; }
+    // add known ad domains to the adservers hostfile and provide in child test class to block domains as needed
+    public virtual string HostFilePath => $"{this.GetTestResourcesFolderPath()}\\adservers.txt";
     /*-----------------------------------------------------------*/
 
     /*-----------------------------------------------------------*/
@@ -58,8 +60,7 @@ namespace E2e.Automation.Framework.Web.Testing
 
       var baseDomain = new Uri(this.BaseUrl).GetDomainFromUrl();
       this.WriteLine($"baseDomain: {baseDomain}");
-      this.AllowedDomains = new List<string>();
-      this.AllowedDomains.Add(baseDomain);
+      this.AllowedDomains = new List<string>() { baseDomain };
 
       this.WriteLine("allowed domains:");
       foreach (var domain in this.AllowedDomains) { this.WriteLine($" - {domain}"); }
@@ -99,7 +100,7 @@ namespace E2e.Automation.Framework.Web.Testing
         // allow all requests from the same domain as the base domain and any explictly defined domains, block any requests from explicitly defined domains, & allow all other requests (for resources, analytics, etc)
         if (!isAllowedDomain)
         {
-          var isBlockedDomain = this.BlockedDomains.Any(domain =>
+          var isBlockedDomain = this._blockedDomains.Any(domain =>
           {
             this.DebugLine($" -- blockedDomains: {domain}");
             return url.Host.ContainsAnyCase(domain);

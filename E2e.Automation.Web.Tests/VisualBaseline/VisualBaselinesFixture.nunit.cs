@@ -1,4 +1,6 @@
-﻿using E2e.Automation.Framework.Extensions;
+﻿using System.Runtime.CompilerServices;
+using E2e.Automation.Framework.Extensions;
+using E2e.Automation.Framework.Web.Extensions;
 
 namespace E2e.Automation.Web.Tests.VisualBaseline
 {
@@ -19,40 +21,8 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
       {
         Locale = "en-US"
       }, "EnglishLocale");
-    /*-----------------------------------------------------------*/
 
-    /*-----------------------------------------------------------*/
-    /// ***********************************************************
-    [SetUp]
-    public async Task SetupAsync()
-    {
-      this.BlockedDomains = new List<string>()
-        {
-          "ad.plus",
-          "googlesyndication.com",
-          "googletagservices.com",
-          "googleadservices.com",
-          "google.com",
-          "googletagmanager.com",
-          "demoqa.com",
-          "linkedin.com",
-          "paypal.com",
-          "bing.com",
-          "securepubads.g.doubleclick.net",
-          "securepubads",
-          "twitter.com",
-          "facebook.com",
-          "adtrafficquality.google",
-          "adtrafficquality",
-          "amazon-adsystem.com",
-          "yahoo.com",
-          "doubleclick.net",
-          "adsrvr.org",
-          "tapad.com",
-          "adnxs.com",
-          "ad.turn.com"
-      };
-    }
+    public override string HostFilePath => $"{this.GetTestResourcesFolderPath()}\\testqaadservers.txt";
     /*-----------------------------------------------------------*/
 
     /*-----------------------------------------------------------*/
@@ -69,7 +39,7 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
         {
           await page.ToHaveExpectedFullScreenshotAsync($"{(await page.TitleAsync()).CleanStringForPath()}_Baseline.png", 0.5f, null, null, true);
         }
-      }, "", 180);
+      }, "", 90);
     }
     /*-----------------------------------------------------------*/
   }

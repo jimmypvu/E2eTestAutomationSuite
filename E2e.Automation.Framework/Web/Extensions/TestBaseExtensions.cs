@@ -33,6 +33,12 @@ namespace E2e.Automation.Framework.Web.Extensions
     }
 
     /// ***********************************************************
+    public static string? GetTestResourcesFolderPath(this TestBase test)
+    {
+      return $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent}\\Resources";
+    }
+
+    /// ***********************************************************
     public static string? GetTestDownloadsFolderPath(this TestBase test)
     {
       return $"{Directory.GetCurrentDirectory()}\\downloads";
