@@ -16,8 +16,8 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
     public override Tuple<BrowserNewContextOptions, string>? AdditionalContextOptionsAndContextName =>
       Tuple.Create(new BrowserNewContextOptions()
       {
-        Locale = "es-ES"
-      }, "SpanishLocale");
+        Locale = "en-US"
+      }, "EnglishLocale");
     /*-----------------------------------------------------------*/
 
     /*-----------------------------------------------------------*/
