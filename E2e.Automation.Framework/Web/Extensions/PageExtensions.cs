@@ -47,7 +47,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     public static async Task ToHaveExpectedScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await page.WaitForDomContentToLoadAndRenderAsync(500);
+      await page.WaitForDomContentToLoadAndRenderAsync();
 
       var log = new TestContextLogger();
       var dimensionsPrefix = $"{page.ViewportSize.Width}x{page.ViewportSize.Height}_";
@@ -168,7 +168,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     public static async Task ToHaveExpectedScreenshotAsync(this ILocator locator, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await locator.Page.WaitForDomContentToLoadAndRenderAsync(500);
+      await locator.Page.WaitForDomContentToLoadAndRenderAsync();
 
       var log = new TestContextLogger();
       var dimensionsPrefix = $"{locator.Page.ViewportSize.Width}x{locator.Page.ViewportSize.Height}_";
@@ -289,7 +289,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     public static async Task ToHaveExpectedFullScreenshotAsync(this IPage page, string baselineImageRelativePath, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await page.WaitForDomContentToLoadAndRenderAsync(500);
+      await page.WaitForDomContentToLoadAndRenderAsync();
 
       var log = new TestContextLogger();
       var dimensionsPrefix = $"{page.ViewportSize.Width}x{page.ViewportSize.Height}_";
@@ -411,7 +411,7 @@ namespace E2e.Automation.Framework.Web.Extensions
     public static async Task ToHaveExpectedMobileScreenshotAsync(this IPage page, string baselineImageRelativePath, string deviceNamePreifx, float variancePercentageAllowed = 0.5f, List<IgnoreRegion> ignoreRegions = null, BitmapCompareOptions? options = null, bool enableMetaDataTagging = true)
     {
       // ensure page is fully loaded, all images and dom content are loaded and rendered
-      await page.WaitForDomContentToLoadAndRenderAsync(500);
+      await page.WaitForDomContentToLoadAndRenderAsync();
 
       var log = new TestContextLogger();
       var dimensionsPrefix = $"{page.ViewportSize.Height}x{page.ViewportSize.Width}_";

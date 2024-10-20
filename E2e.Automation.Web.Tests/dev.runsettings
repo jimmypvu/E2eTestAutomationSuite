@@ -7,6 +7,7 @@
 		<!--chromium, firefox, webkit-->
 		<BrowserName>chromium</BrowserName>
 		<ExpectTimeout>60000</ExpectTimeout>
+		<!--bug with lauchoptions in .runsettings not being used if no launch options are provided-->
 		<LaunchOptions>
 			<!--chromium, chrome, msedge-->
 			<Channel>chromium</Channel>
@@ -16,7 +17,7 @@
 	</Playwright>
 	<TestRunParameters>
 		<!--chromium, chrome, msedge, firefox, webkit-->
-		<Parameter name="browser" value="chrome" />
+		<Parameter name="browser" value="chromium" />
 		<Parameter name="viewportWidth" value="1280" />
 		<Parameter name="viewportHeight" value="720" />
 		<Parameter name="navigationTimeoutMs" value="60000" />
@@ -28,7 +29,7 @@
 
 		<Parameter name="environment" value="local" />
 		<Parameter name="channel" value="chromium" />
-		<Parameter name="headless" value="false" />
+		<Parameter name="headless" value="true" />
 		<Parameter name="slowMo" value="33" />
 		<!-- Enter the local VM name -->
 		<Parameter name="vmname" value="jvuqualityvm" />

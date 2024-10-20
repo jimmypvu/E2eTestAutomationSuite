@@ -41,6 +41,7 @@
 		<Folder Include="DataBase\" />
 		<Folder Include="API\" />
 		<Folder Include="Resources\Baselines\DemoTestFixture\" />
+		<Folder Include="Resources\Baselines\VisualBaselinesFixture\Launch_Mobile_Page_And_Check_Baseline_Image\chrome\" />
 		<Folder Include="Resources\TestData\Web\" />
 		<Folder Include="Resources\TestData\API\" />
 		<Folder Include="Resources\TestData\DataBase\" />

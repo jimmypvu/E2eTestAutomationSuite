@@ -13,12 +13,15 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
   {
     /*-----------------------------------------------------------*/
     public override string BaseUrl => "https://toolsqa.com/";
+    public override string HostFilePath => $"{this.GetTestResourcesFolderPath()}\\testqaadservers.txt";
 
     // testcasesource
-    public static IEnumerable<TestCaseData> DeviceNames => MobileTestData.GetDeviceNamesAsync().Result.Select(deviceName =>
+    public static IEnumerable<string> DeviceNames => MobileTestData.GetDeviceNamesAsync().Result;
+
+    // alt approach if you want to set test case names too
+    public static IEnumerable<TestCaseData> DeviceNamesAsTestCaseData => MobileTestData.GetDeviceNamesAsync().Result.Select(deviceName =>
         new TestCaseData(deviceName).SetName($"{deviceName}"));
 
-    public override string HostFilePath => $"{this.GetTestResourcesFolderPath()}\\testqaadservers.txt";
     /*-----------------------------------------------------------*/
 
     /*-----------------------------------------------------------*/
