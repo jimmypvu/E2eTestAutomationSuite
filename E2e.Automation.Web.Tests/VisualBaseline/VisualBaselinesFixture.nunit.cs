@@ -8,7 +8,7 @@ namespace E2e.Automation.Web.Tests.VisualBaseline
   /// ***********************************************************
   [TestFixture]
   [Category("Demo")]
-  public class DemoVisualBaselinesFixture : TestBase
+  public class VisualBaselinesFixture : TestBase
   {
     /*-----------------------------------------------------------*/
     public override string BaseUrl => "https://toolsqa.com/";
